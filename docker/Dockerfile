@@ -13,6 +13,7 @@ RUN yes | flutter doctor --android-licenses
 # Pre-install Android SDK components
 RUN sdkmanager --install "build-tools;34.0.0" \
     "ndk;26.3.11579264" \
+    "ndk;27.0.12077973" \
     "cmake;3.22.1"
 
 RUN flutter precache
