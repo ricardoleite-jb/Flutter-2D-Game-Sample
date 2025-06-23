@@ -19,20 +19,16 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
   libgstreamer-plugins-base1.0-dev \
   && rm -rf /var/lib/apt/lists/*
 
-# Set environment variables
-ENV FLUTTER_VERSION=3.22.1 \
-    FLUTTER_HOME=/opt/flutter
+RUN git clone https://github.com/flutter/flutter.git /usr/local/flutter
 
-# Install Flutter SDK (Web + Linux support included)
-RUN git clone --depth 1 --branch $FLUTTER_VERSION https://github.com/flutter/flutter.git $FLUTTER_HOME
-
-ENV PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+# Set flutter environment path
+ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PATH}"
 
 # Precache tools
 RUN flutter precache --web --linux && flutter doctor -v
 
 # Set working directory
-WORKDIR /app
+#WORKDIR /app
 
 # Optional: uncomment to copy and resolve pub dependencies during image build
 # COPY pubspec.* ./
