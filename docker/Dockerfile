@@ -1,19 +1,41 @@
-FROM instrumentisto/flutter:latest
+FROM debian:bookworm-slim
 
-# Install required packages
+# Install system dependencies for Flutter Web/Linux
 RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    git \
-    unzip \
-    && rm -rf /var/lib/apt/lists/*
+  curl \
+  git \
+  unzip \
+  xz-utils \
+  zip \
+  ca-certificates \
+  build-essential \
+  clang \
+  cmake \
+  ninja-build \
+  pkg-config \
+  libgtk-3-dev \
+  libglib2.0-dev \
+  libgstreamer1.0-dev \
+  libgstreamer-plugins-base1.0-dev \
+  && rm -rf /var/lib/apt/lists/*
 
-# Accept Android SDK licenses
-RUN yes | flutter doctor --android-licenses
+# Set environment variables
+ENV FLUTTER_VERSION=3.22.1 \
+    FLUTTER_HOME=/opt/flutter
 
-# Pre-install Android SDK components
-RUN sdkmanager --install "build-tools;34.0.0" \
-    "ndk;26.3.11579264" \
-    "ndk;27.0.12077973" \
-    "cmake;3.22.1"
+# Install Flutter SDK (Web + Linux support included)
+RUN git clone --depth 1 --branch $FLUTTER_VERSION https://github.com/flutter/flutter.git $FLUTTER_HOME
 
-RUN flutter precache
+ENV PATH="$FLUTTER_HOME/bin:$FLUTTER_HOME/bin/cache/dart-sdk/bin:$PATH"
+
+# Precache tools
+RUN flutter precache --web --linux && flutter doctor -v
+
+# Set working directory
+WORKDIR /app
+
+# Optional: uncomment to copy and resolve pub dependencies during image build
+# COPY pubspec.* ./
+# RUN flutter pub get
+
+# This image expects app volume mounting, so no CMD
