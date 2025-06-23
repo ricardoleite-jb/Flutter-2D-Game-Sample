@@ -28,7 +28,7 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
   double _gravityVelocity = 0;
 
   // The maximum length that the player can jump. Defined in virtual pixels.
-  final double _jumpLength = 600;
+  final double _jumpLength = 500;
 
   // Whether the player is currently in the air, this can be used to restrict
   // movement for example.
