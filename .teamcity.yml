@@ -46,13 +46,13 @@ jobs:
           git init
 
 
-          git config user.email "daniel.gallo@gmail.com"
+          git config user.email "%GitHubEmail%"
 
           git config user.name "TeamCity Bot"
 
 
           git remote add origin
-          https://%GitHubToken%@github.com/DanielGallo/Flutter-2D-Game-Sample.git
+          https://%GitHubToken%@github.com/%GitHubUsername%/Flutter-2D-Game-Sample.git
 
 
           # Checkout or reset to gh-pages branch
@@ -72,3 +72,5 @@ jobs:
         working-directory: build/web
 secrets:
   GitHubToken: credentialsJSON:3bd4e308-010a-4955-9669-6dc7a40073d4
+  GitHubEmail: credentialsJSON:eeb65406-8c92-4990-850e-53ccaa405b03
+  GitHubUsername: credentialsJSON:c32aff10-8760-4fe1-b978-9e98b17616c8
