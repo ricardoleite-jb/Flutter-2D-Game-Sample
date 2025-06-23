@@ -26,12 +26,3 @@ ENV PATH="/usr/local/flutter/bin:/usr/local/flutter/bin/cache/dart-sdk/bin:${PAT
 
 # Precache tools
 RUN flutter precache --web --linux && flutter doctor -v
-
-# Set working directory
-#WORKDIR /app
-
-# Optional: uncomment to copy and resolve pub dependencies during image build
-# COPY pubspec.* ./
-# RUN flutter pub get
-
-# This image expects app volume mounting, so no CMD
