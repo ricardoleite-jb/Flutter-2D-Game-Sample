@@ -131,6 +131,15 @@ class Player extends SpriteAnimationGroupComponent<PlayerState>
       add(jumpEffect);
     }
   }
+
+  /// Move the player horizontally by the given amount.
+  /// Positive values move right, negative values move left.
+  void moveHorizontally(double amount) {
+    // Only allow horizontal movement when the player is on the ground
+    if (!inAir) {
+      position.x += amount;
+    }
+  }
 }
 
 enum PlayerState { running, jumping, falling }

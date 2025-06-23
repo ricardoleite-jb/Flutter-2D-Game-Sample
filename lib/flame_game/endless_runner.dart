@@ -1,6 +1,8 @@
 import 'package:flame/components.dart';
+import 'package:flame/events.dart';
 import 'package:flame/game.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../audio/audio_controller.dart';
 import '../level_selection/levels.dart';
@@ -21,7 +23,7 @@ import 'endless_world.dart';
 ///
 /// Note that both of the last are passed in to the super constructor, they
 /// could also be set inside of `onLoad` for example.
-class EndlessRunner extends FlameGame<EndlessWorld> with HasCollisionDetection {
+class EndlessRunner extends FlameGame<EndlessWorld> with HasCollisionDetection, KeyboardEvents {
   EndlessRunner({
     required this.level,
     required PlayerProgress playerProgress,
@@ -79,5 +81,36 @@ class EndlessRunner extends FlameGame<EndlessWorld> with HasCollisionDetection {
         '${world.scoreNotifier.value}',
       );
     });
+  }
+
+  /// Handle keyboard events for player movement and jumping.
+  @override
+  KeyEventResult onKeyEvent(KeyEvent event, Set<LogicalKeyboardKey> keysPressed) {
+    // Movement speed for horizontal movement
+    const double movementSpeed = 25.0;
+
+    // Handle key down events
+    if (event is KeyDownEvent) {
+      // Space key for jumping
+      if (event.logicalKey == LogicalKeyboardKey.space) {
+        // Jump upward (similar to tapping above the player)
+        final jumpDirection = Vector2(0, -1);
+        world.player.jump(jumpDirection);
+        return KeyEventResult.handled;
+      }
+    }
+
+    // Handle currently pressed keys for continuous movement
+    if (keysPressed.contains(LogicalKeyboardKey.arrowLeft)) {
+      world.player.moveHorizontally(-movementSpeed);
+      return KeyEventResult.handled;
+    }
+
+    if (keysPressed.contains(LogicalKeyboardKey.arrowRight)) {
+      world.player.moveHorizontally(movementSpeed);
+      return KeyEventResult.handled;
+    }
+
+    return KeyEventResult.ignored;
   }
 }

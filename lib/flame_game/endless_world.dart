@@ -161,6 +161,7 @@ class EndlessWorld extends World with TapCallbacks, HasGameReference {
     }
   }
 
+
   /// A helper function to define how fast a certain level should be.
   static double _calculateSpeed(int level) => 200 + (level * 200);
 }
